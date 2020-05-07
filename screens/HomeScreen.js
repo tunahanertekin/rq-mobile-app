@@ -1,6 +1,7 @@
 import React from 'react'
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 
+
 export default class HomeScreen extends React.Component {
     render() {
         return(
@@ -8,6 +9,7 @@ export default class HomeScreen extends React.Component {
                   <TouchableOpacity style={styles.buttons}>
                       <Text>
                           Users
+                          
                       </Text>
                   </TouchableOpacity>
 
@@ -20,7 +22,7 @@ export default class HomeScreen extends React.Component {
 
                   <View style={styles.down}>
 
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate("LoggedIn")} style={styles.buttons}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate("Login")} style={styles.buttons}>
                         <Text>
                             Login
                         </Text>

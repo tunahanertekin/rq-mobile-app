@@ -5,6 +5,7 @@ export default class UserList extends React.Component {
     render() {
         return(
               <View style={styles.container}>
+
                   <Text>
                       User List Screen
                   </Text>
@@ -12,7 +13,6 @@ export default class UserList extends React.Component {
         )
     }
 }
-
 
 const styles = StyleSheet.create(
     {
