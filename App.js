@@ -13,8 +13,41 @@ import LoginScreen from './screens/LoginScreen'
 
 import UserList from './screens/tabs/UserList'
 import QuoteList from './screens/tabs/QuoteList'
-import MyQuotes from './screens/tabs/MyQuotes'
+import MyBooks from './screens/tabs/MyBooks'
+import MyQuotes from './screens/modelPages/MyQuotes'
+import AddBook from './screens/functionPages/AddBook'
+import AllQuotePage from './screens/modelPages/AllQuotePage'
 
+console.disableYellowBox = true;
+
+const MyQuotesStack = createStackNavigator(
+  {
+    MyBooks: {
+      screen: MyBooks,
+      navigationOptions: {
+        headerShown: false
+      }
+    },
+    MyQuotes: {
+      screen: MyQuotes,
+      navigationOptions: {
+        headerShown: false
+      }
+    },
+    AddBook: {
+      screen: AddBook,
+      navigationOptions: {
+        headerShown: false
+      }
+    },
+    AllQuotePage: {
+      screen: AllQuotePage,
+      navigationOptions: {
+        headerShown: true
+      }
+    }
+  }
+)
 
 const AppTabNavigator = createBottomTabNavigator(
   {
@@ -36,8 +69,8 @@ const AppTabNavigator = createBottomTabNavigator(
         )
       }
     },
-    MyQuotes: {
-      screen: MyQuotes,
+    MyActivities: {
+      screen: MyQuotesStack,
       navigationOptions: {
         headerShown: false,
         tabBarIcon: () => (

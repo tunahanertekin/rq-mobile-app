@@ -3,12 +3,19 @@ import {View, Text, StyleSheet, TextInput, TouchableOpacity} from 'react-native'
 
 export default class LoginScreen extends React.Component {
     
+    constructor(){
+        super()
+        global.user = {}
+    }
+
     state = {
         username: "tunanzi",
         password: "123",
         loginResponse: "inittt",
         warning: ""
     }
+
+    
 
     sendLoginRequest = () => {
         const {username, password} = this.state
@@ -31,7 +38,10 @@ export default class LoginScreen extends React.Component {
             })
             
             if(this.state.loginResponse == "SUCCESS"){
-                this.props.navigation.navigate("LoggedIn", {user: responseJson.data})//send user data to userlist
+                //assign global user variable
+                global.user = responseJson.data
+                //redirect to UserList
+                this.props.navigation.navigate("LoggedIn")
             }
             else{
                 this.setState({
@@ -41,13 +51,9 @@ export default class LoginScreen extends React.Component {
         })
         .catch((error) => {
             this.setState({
-                loginResponse: "aaa"+error.message
+                loginResponse: error.message
             })
         })
-
-        
-
-        
     }
 
     render() {
