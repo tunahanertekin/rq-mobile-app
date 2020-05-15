@@ -18,6 +18,9 @@ import MyQuotes from './screens/modelPages/MyQuotes'
 import AddBook from './screens/functionPages/AddBook'
 import AllQuotePage from './screens/modelPages/AllQuotePage'
 
+
+import TestScreen from './screens/tabs/TestScreen'
+
 console.disableYellowBox = true;
 
 const MyQuotesStack = createStackNavigator(
@@ -51,6 +54,16 @@ const MyQuotesStack = createStackNavigator(
 
 const AppTabNavigator = createBottomTabNavigator(
   {
+    //TEST SCREEN
+    Test: {
+      screen: TestScreen,
+      navigationOptions: {
+        headerShown: false,
+        tabBarIcon: () => (
+          <Icon name="android" size={30} />
+        )
+      }
+    },
     UserList: {
       screen: UserList,
       navigationOptions: {
