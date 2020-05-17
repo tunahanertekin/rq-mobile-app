@@ -16,82 +16,6 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 
 
 
-const EditModal = ({page, body}) => {
-
-    
-
-    const [modalVisible, setModalVisible] = useState(false);
-    const [tempPage, setTempPage] = useState("")
-    const [tempBody, setTempBody] = useState("")
-
-    
-    return (
-      <View style={styles.centeredView}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-          }}
-        >
-            <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                
-
-                <TextInput style={styles.input}
-                placeholder="Page"
-                placeholderTextColor="yellow"
-                onChangeText={ newPage => setTempPage(newPage)  }
-                defaultValue={page}
-                //value={ this.state.username }
-                />
-
-                <TextInput style={styles.bodyInput}
-                placeholder="Body"
-                placeholderTextColor="yellow"
-                multiline={true}
-                value={body}
-                //onChangeText={ username => this.setState({ username }) }
-                //value={ this.state.username }
-                />
-    
-                <TouchableHighlight
-                    style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                    onPress={() => {
-                    setModalVisible(!modalVisible);
-                    }}
-                >
-                    <Text style={styles.textStyle}>Hide Modal</Text>
-                </TouchableHighlight>
-                </View>
-            </View>
-        </Modal>
-
-        
-        <View style={{ margin: 10 }}>
-            <TouchableOpacity
-            onPress={() => {
-                setModalVisible(true);
-            }}
-            >
-                <Text>
-                    <Icon name="edit" size={30} />
-                </Text>
-            </TouchableOpacity>
-        </View>
-  
-        
-      </View>
-    );
-  };
-
-
-
-
-
-
-
 
 export default class MyQuotes extends React.Component {
 
@@ -100,7 +24,21 @@ export default class MyQuotes extends React.Component {
     state = {
         book: this.props.navigation.state.params.book,
         quotesResponse: {},
-        error: ""
+        error: "",
+
+        isModalVisible: false,
+        tempQuote: { page: 0, body: "init0" },
+        tempPage: 0,
+        tempBody: "init1",
+        editResponse: {message: "editresponseinit"},
+
+        deleteResponse: {message: "deleteresponseinit"},
+
+        isMessageModalVisible: false,
+        isDeleteValidationModalVisible: false,
+        messageModalText: "messagemodaltextinit",
+        messageModalColor: "black"//green when success, else red
+
     }
 
     
@@ -123,6 +61,82 @@ export default class MyQuotes extends React.Component {
             })
         });
     }
+
+    sendGetQuotesRequest = () => {
+        fetch('http://10.0.2.2:3000/users/' + global.user.id + "/books/" + this.state.book.id + "/quotes")
+        .then((response) => response.json())
+        .then((responseJson) => {
+            this.setState({
+                quotesResponse: responseJson,
+            })
+            if(responseJson.status == "FAILURE"){
+                this.setState({
+                    error: responseJson.message
+                })
+            }
+        })
+        .catch((error) => {
+            this.setState({
+                error: error.message
+            })
+        });
+    }
+
+
+    sendEditQuoteRequest = () => {
+
+        fetch('http://10.0.2.2:3000/users/' + global.user.id + "/books/" + this.state.book.id + "/quotes/" + this.state.tempQuote.id, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "page": this.state.tempPage,
+                "body": this.state.tempBody
+            })
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            this.setState({
+                editResponse: responseJson,
+                messageModalText: responseJson.message,
+                messageModalColor: "green"
+            })
+        })
+        .catch((error) => {
+            this.setState({
+                editResponse: {message: error.message},
+                messageModalColor: "red"
+            })
+        })
+
+
+    }
+
+
+    sendDeleteQuoteRequest = () => {
+        fetch('http://10.0.2.2:3000/users/' + global.user.id + "/books/" + this.state.book.id + "/quotes/" + this.state.tempQuote.id, {
+            method: 'DELETE'
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            this.setState({
+                deleteResponse: responseJson,
+                messageModalText: responseJson.message,
+                messageModalColor: "green"
+            })
+        })
+        .catch((error) => {
+            this.setState({
+                deleteResponse: {message: error.message},
+                messageModalColor: "green"
+            })
+        })
+
+        
+
+    }
     
     render() {
         return(
@@ -131,6 +145,24 @@ export default class MyQuotes extends React.Component {
                    My Quotes - {this.state.book.title}
                 </Text>
 
+                <View style={{ flexDirection: "row" }}>
+                    <TouchableOpacity
+                    //onPress={ () => //add }
+                    >
+                        <Text style={{ margin: 10 }}>
+                            <Icon name="plus" size={30} />
+                        </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                    onPress={ () => this.sendGetQuotesRequest() }
+                    >
+                        <Text style={{ margin: 10 }}>
+                            <Icon name="sync" size={30} />
+                        </Text>
+                    </TouchableOpacity>
+
+                </View>
                 <FlatList
                     data={this.state.quotesResponse.data}
                     renderItem={({ item }) => 
@@ -157,11 +189,23 @@ export default class MyQuotes extends React.Component {
 
                         
                         
-                        <EditModal page={item.page.toString()} body={item.body} />
+                        <View style={{ margin: 10 }}>
+                            <TouchableOpacity
+                            onPress={ () => this.setState({ tempPage: item.page, tempBody: item.body, tempQuote: item, isModalVisible: true }) }
+                            >
+                                <Text>
+                                    <Icon name="edit" size={30} />
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
 
 
                         <View style={{ margin: 10 }}>
-                            <TouchableOpacity>
+                            <TouchableOpacity
+                            onPress={ () => {
+                                this.setState({ tempQuote: item, isDeleteValidationModalVisible: true })
+                            } }
+                            >
                                 <Text>
                                     <Icon name="trash-alt" size={30} />
                                 </Text>
@@ -171,6 +215,149 @@ export default class MyQuotes extends React.Component {
                     
                     }
                 />
+
+
+                <View>
+                    <Text>
+                        {this.state.tempPage} - {this.state.tempBody}
+                    </Text>
+                </View>
+
+
+
+
+                <Modal
+                //--------------------------------------EDIT MODAL---------------------------------------
+                animationType="slide"
+                transparent={true}
+                visible={this.state.isModalVisible}
+                >
+                    <View style={styles.modalView}>
+
+                        <View>
+                            <Text style={{ fontSize: 30, color: "lightblue" }}>
+                                Edit Quote
+                            </Text>
+                        </View>
+
+                        <View>
+                            <TextInput style={styles.input}
+                            placeholder="Page"
+                            onChangeText={ newPage => this.setState({ tempPage: newPage }) }
+                            defaultValue={ this.state.tempQuote.page.toString() }
+                            />
+                        </View>
+
+                        <View>
+                            <TextInput style={styles.bodyInput}
+                            placeholder="Body"
+                            multiline={true}
+                            onChangeText={ newBody => this.setState({ tempBody: newBody }) }
+                            defaultValue={ this.state.tempQuote.body }
+                            />
+                        </View>
+
+                        
+
+                        <View style={{ flexDirection: "row" }}>
+                            <TouchableOpacity
+                            style={{ margin: 10 }}
+                            onPress={ () => {
+                                this.sendEditQuoteRequest()
+                                this.setState({ 
+                                    isModalVisible: false, 
+                                    tempQuote: {page:0, body:""},
+                                    tempPage: 0,
+                                    tempBody: "",
+                                    isMessageModalVisible: true
+                                })
+                            } }
+                            >
+                                <Text style={{ color: "yellow" }}>
+                                    Done
+                                </Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                            style={{ margin: 10 }}
+                            onPress={ () => this.setState({isModalVisible: false}) }
+                            >
+                                <Text style={{ color: "yellow" }}>
+                                    Close
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
+
+                <Modal
+                //------------------------------------MESSAGE MODAL--------------------------------------
+                animationType="slide"
+                transparent={true}
+                visible={this.state.isMessageModalVisible}
+                >
+                    <View style={styles.messageModalView}> 
+
+                        <Text style={{ color: "white", fontSize: 20 }}>
+                            {this.state.messageModalText}
+                        </Text>
+
+                        <TouchableOpacity
+                        style={{ margin: 20 }}
+                        onPress={ () => {
+                            this.setState({ isMessageModalVisible: false })
+                            this.sendGetQuotesRequest()
+                        } }
+                        >
+                            <Text style={{ fontSize: 25, color: "yellow" }}>
+                                Okay
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+
+                </Modal>
+
+
+                <Modal
+                //------------------------------------DELETE VALIDATION MODAL--------------------------------------
+                animationType="slide"
+                transparent={true}
+                visible={this.state.isDeleteValidationModalVisible}
+                >
+                    <View style={styles.messageModalView}> 
+                        <Text style={{ color: "white", fontSize: 20 }}>
+                            Are you sure deleting this quote?
+                        </Text>
+
+                        <View style={{ flexDirection: "row" }}>
+                            <TouchableOpacity
+                            style={{ margin: 10 }}
+                            onPress={ () => {
+                                this.sendDeleteQuoteRequest()
+                                
+                                this.setState({ 
+                                    isDeleteValidationModalVisible: false, 
+                                    isMessageModalVisible: true, 
+                                })
+                            } }
+                            >
+                                <Text style={{ fontSize: 25, color: "yellow" }}>
+                                    Yes
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                            style={{ margin: 10 }}
+                            onPress={ () => this.setState({ isDeleteValidationModalVisible: false }) }
+                            >
+                                <Text style={{ fontSize: 25, color: "yellow" }}>
+                                    No
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        
+                    </View>
+
+                </Modal>
             </View>
         )
     }
@@ -214,6 +401,21 @@ const styles = StyleSheet.create(
             color: "white",
             width: 200,
             textAlignVertical: "top"
+            
+        },
+        messageModalView: {
+            
+            alignItems: "center",
+            backgroundColor: "green",
+            padding: 30,
+            alignSelf: "center",
+            marginTop: 80,
+            borderRadius: 20,
+            opacity: 0.85,
+            width: 300,
+            height: 200,
+            borderColor: "yellow",
+            borderWidth: 2
             
         }
     }
