@@ -112,12 +112,12 @@ export default class MyBooks extends React.Component {
                             onPress={ () => this.props.navigation.navigate("MyQuotes", { book: item }) }
                             >
                                 <View style={{ flexDirection: "row" }}>
-                                    <View style={{ width: 100, height: 30 }}>
-                                        <Text>
+                                    <View style={{ width: 200, height: 30 }}>
+                                        <Text style={{ fontStyle: "italic" }}>
                                             {item.title}
                                         </Text>
                                     </View>
-                                    <View style={{ width: 100, height: 30 }}>
+                                    <View style={{ width: 200, height: 30 }}>
                                         <Text>
                                             {item.author}
                                         </Text>

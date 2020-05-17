@@ -37,9 +37,14 @@ export default class MyQuotes extends React.Component {
         isMessageModalVisible: false,
         isDeleteValidationModalVisible: false,
         messageModalText: "messagemodaltextinit",
-        messageModalColor: "black"//green when success, else red
+
+        isAddingModalVisible: false,
+        addResponse: {message: "addresponseinit"},
+
 
     }
+
+
 
     
     componentDidMount(){
@@ -100,14 +105,12 @@ export default class MyQuotes extends React.Component {
         .then((responseJson) => {
             this.setState({
                 editResponse: responseJson,
-                messageModalText: responseJson.message,
-                messageModalColor: "green"
+                messageModalText: responseJson.message
             })
         })
         .catch((error) => {
             this.setState({
-                editResponse: {message: error.message},
-                messageModalColor: "red"
+                editResponse: {message: error.message}
             })
         })
 
@@ -124,18 +127,40 @@ export default class MyQuotes extends React.Component {
             this.setState({
                 deleteResponse: responseJson,
                 messageModalText: responseJson.message,
-                messageModalColor: "green"
             })
         })
         .catch((error) => {
             this.setState({
                 deleteResponse: {message: error.message},
-                messageModalColor: "green"
             })
         })
+    }
 
-        
 
+    sendAddQuoteRequest = () => {
+        fetch('http://10.0.2.2:3000/users/' + global.user.id + "/books/" + this.state.book.id + "/quotes", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "page": this.state.tempPage,
+                "body": this.state.tempBody
+            })
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            this.setState({
+                addResponse: responseJson,
+                messageModalText: responseJson.message
+            })
+        })
+        .catch((error) => {
+            this.setState({
+                addResponse: {message: error.message}
+            })
+        })
     }
     
     render() {
@@ -147,7 +172,7 @@ export default class MyQuotes extends React.Component {
 
                 <View style={{ flexDirection: "row" }}>
                     <TouchableOpacity
-                    //onPress={ () => //add }
+                    onPress={ () => this.setState({ isAddingModalVisible: true }) }
                     >
                         <Text style={{ margin: 10 }}>
                             <Icon name="plus" size={30} />
@@ -357,6 +382,60 @@ export default class MyQuotes extends React.Component {
                         
                     </View>
 
+                </Modal>
+
+
+                <Modal
+                //--------------------------------------ADD MODAL---------------------------------------
+                animationType="slide"
+                transparent={true}
+                visible={this.state.isAddingModalVisible}
+                >
+                    <View style={styles.modalView}>
+
+                        <View>
+                            <TextInput style={styles.input}
+                            placeholder="Page"
+                            onChangeText={ page => this.setState({ tempPage: page }) }
+                            />
+                        </View>
+
+                        <View>
+                            <TextInput style={styles.bodyInput}
+                            placeholder="Body"
+                            onChangeText={ body => this.setState({ tempBody: body }) }
+                            />
+                        </View>
+
+                        <View style={{ flexDirection: "row" }}>
+                            <TouchableOpacity
+                            style={{ margin: 10 }}
+                            onPress={ () => {
+                                this.sendAddQuoteRequest()
+                                
+                                this.setState({ 
+                                    isAddingModalVisible: false, 
+                                    isMessageModalVisible: true, 
+                                })
+                            } }
+                            >
+                                <Text style={{ fontSize: 25, color: "yellow" }}>
+                                    Add
+                                </Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                            style={{ margin: 10 }}
+                            onPress={ () => this.setState({ isAddingModalVisible: false }) }
+                            >
+                                <Text style={{ fontSize: 25, color: "yellow" }}>
+                                    Close
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+
+
+                    </View>
                 </Modal>
             </View>
         )
