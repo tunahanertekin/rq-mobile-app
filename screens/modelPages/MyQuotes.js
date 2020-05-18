@@ -449,8 +449,7 @@ const styles = StyleSheet.create(
             justifyContent: "center",
             alignItems: "center"
         },
-        centeredView: {
-        },
+
         modalView: {
             
             alignItems: "center",
