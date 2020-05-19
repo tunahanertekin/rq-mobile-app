@@ -17,6 +17,7 @@ import MyBooks from './screens/tabs/MyBooks'
 import MyQuotes from './screens/modelPages/MyQuotes'
 import AddBook from './screens/functionPages/AddBook'
 import AllQuotePage from './screens/modelPages/AllQuotePage'
+import MyProfile from './screens/tabs/MyProfile'
 
 
 import TestScreen from './screens/tabs/TestScreen'
@@ -88,6 +89,15 @@ const AppTabNavigator = createBottomTabNavigator(
         headerShown: false,
         tabBarIcon: () => (
           <Icon name="pen-fancy" size={30} />
+        )
+      }
+    },
+    MyProfile: {
+      screen: MyProfile,
+      navigationOptions: {
+        headerShown: false,
+        tabBarIcon: () => (
+          <Icon name="user-edit" size={30} />
         )
       }
     }
