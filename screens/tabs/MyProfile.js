@@ -4,7 +4,8 @@ import {
     Text, 
     StyleSheet, 
     TouchableOpacity,
-    TextInput
+    TextInput,
+    Modal
 } from 'react-native'
 
 import Icon from 'react-native-vector-icons/FontAwesome5'
@@ -18,8 +19,12 @@ export default class MyProfile extends React.Component {
         tempUsername: "usernameinit",
         tempEmail: "",
         tempPinned: "",
+        tempGlobalUser: {username: "", email: "", pinned: ""},
 
-        updateResponse: {message: "updateresponseinit"}
+        updateResponse: {message: "updateresponseinit"},
+
+        isMessageModalVisible: false,
+        messageModalText: "messagemodaltextinit"
     }
 
     //handles logging out
@@ -56,11 +61,17 @@ export default class MyProfile extends React.Component {
                 updateResponse: {message: error.message}
             })
         })
+        
         .then(() => {
-            global.user.username = tempUsername
-        })
-        .then(() => {
-            this.chooseEditableProperty(0)
+            {
+                this.chooseEditableProperty(0)
+                delete global.user
+                global.user = {
+                    username: "heyu",
+                    lastLogin: "sfdawref"
+                }
+
+            }
         })
     }
 
@@ -81,13 +92,13 @@ export default class MyProfile extends React.Component {
             this.setState({
                 updateResponse: responseJson,
             })
-            global.user.email = tempEmail
         })
         .catch((error) => {
             this.setState({
                 updateResponse: {message: error.message}
             })
         })
+        
     }
 
 
@@ -107,7 +118,6 @@ export default class MyProfile extends React.Component {
             this.setState({
                 updateResponse: responseJson,
             })
-            global.user.pinned = tempPinned
         })
         .catch((error) => {
             this.setState({
@@ -306,6 +316,19 @@ export default class MyProfile extends React.Component {
                 </View>
                 
                 
+                <Modal
+                //--------------------------------------REDIRECT TO LOGIN MODAL---------------------------------------
+                animationType="slide"
+                transparent={true}
+                visible={this.state.isMessageModalVisible}
+                >
+                    <View style={styles.messageModalView}>
+                        <Text>
+                            {this.state.messageModalText}
+                        </Text>
+                    </View>
+                        
+                </Modal>
             </View>
         )
     }
@@ -332,6 +355,22 @@ const styles = StyleSheet.create(
             height: 40,
             color: "black",
             width: 200
+        },
+
+        messageModalView: {
+            
+            alignItems: "center",
+            backgroundColor: "green",
+            padding: 30,
+            alignSelf: "center",
+            marginTop: 80,
+            borderRadius: 20,
+            opacity: 0.85,
+            width: 300,
+            height: 200,
+            borderColor: "yellow",
+            borderWidth: 2
+            
         }
     }
 )

@@ -166,6 +166,16 @@ export default class MyQuotes extends React.Component {
     render() {
         return(
             <View style={styles.container}>
+
+                <TouchableOpacity
+                style={{ position: "absolute", top: 0, left: 0 }}
+                onPress={ () => this.props.navigation.navigate("MyBooks") }
+                >
+                    <Text style={{ margin: 10 }}>
+                        <Icon name="backward" size={30} />
+                    </Text>
+                </TouchableOpacity>
+
                 <Text style={{ fontSize: 20, margin: 20 }}>
                    My Quotes - {this.state.book.title}
                 </Text>
@@ -214,25 +224,25 @@ export default class MyQuotes extends React.Component {
 
                         
                         
-                        <View style={{ margin: 10 }}>
+                        <View style={{ margin: 5 }}>
                             <TouchableOpacity
                             onPress={ () => this.setState({ tempPage: item.page, tempBody: item.body, tempQuote: item, isModalVisible: true }) }
                             >
                                 <Text>
-                                    <Icon name="edit" size={30} />
+                                    <Icon name="edit" size={20} />
                                 </Text>
                             </TouchableOpacity>
                         </View>
 
 
-                        <View style={{ margin: 10 }}>
+                        <View style={{ margin: 5 }}>
                             <TouchableOpacity
                             onPress={ () => {
                                 this.setState({ tempQuote: item, isDeleteValidationModalVisible: true })
                             } }
                             >
                                 <Text>
-                                    <Icon name="trash-alt" size={30} />
+                                    <Icon name="trash-alt" size={20} />
                                 </Text>
                             </TouchableOpacity>
                         </View>
@@ -240,15 +250,6 @@ export default class MyQuotes extends React.Component {
                     
                     }
                 />
-
-
-                <View>
-                    <Text>
-                        {this.state.tempPage} - {this.state.tempBody}
-                    </Text>
-                </View>
-
-
 
 
                 <Modal
