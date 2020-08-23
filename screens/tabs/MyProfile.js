@@ -5,7 +5,8 @@ import {
     StyleSheet, 
     TouchableOpacity,
     TextInput,
-    Modal
+    Modal,
+    ImageBackground
 } from 'react-native'
 
 import Icon from 'react-native-vector-icons/FontAwesome5'
@@ -16,9 +17,9 @@ export default class MyProfile extends React.Component {
     state= {
         editableProperty: 0,
 
-        tempUsername: "usernameinit",
-        tempEmail: "",
-        tempPinned: "",
+        tempUsername: global.user.username,
+        tempEmail: global.user.email,
+        tempPinned: global.user.pinned,
         tempGlobalUser: {username: "", email: "", pinned: ""},
 
         updateResponse: {message: "updateresponseinit"},
@@ -58,19 +59,12 @@ export default class MyProfile extends React.Component {
         })
         .catch((error) => {
             this.setState({
-                updateResponse: {message: error.message}
+                updateResponse: {message: error.message},
             })
         })
-        
         .then(() => {
             {
                 this.chooseEditableProperty(0)
-                delete global.user
-                global.user = {
-                    username: "heyu",
-                    lastLogin: "sfdawref"
-                }
-
             }
         })
     }
@@ -95,8 +89,13 @@ export default class MyProfile extends React.Component {
         })
         .catch((error) => {
             this.setState({
-                updateResponse: {message: error.message}
+                updateResponse: {message: error.message},
             })
+        })
+        .then(() => {
+            {
+                this.chooseEditableProperty(0)
+            }
         })
         
     }
@@ -121,35 +120,46 @@ export default class MyProfile extends React.Component {
         })
         .catch((error) => {
             this.setState({
-                updateResponse: {message: error.message}
+                updateResponse: {message: error.message},
             })
+        })
+        .then(() => {
+            {
+                this.chooseEditableProperty(0)
+            }
         })
     }
 
     render() {
         return(
-            <View style={styles.container}>
+
+            <ImageBackground
+            source={{ uri: 'https://images.pexels.com/photos/159872/book-open-pages-literature-159872.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' }}
+            style={{width: '100%', height: '100%'}}
+            > 
+                <View style={styles.container}>
                 
-                <View style={{ flexDirection: "row" }}>
+                <View style={{ flexDirection: "row", marginTop: 10 }}>
                     <View style={{ marginRight: 40 }}>
+                        <Text>
+                            Last Login:
+                        </Text>
                         <Text>
                             {global.user.lastLogin}
                         </Text>
                     </View>
 
-                    <View style={{ flexDirection: "row" }}>
-                        <Text>
-                            {global.user.username} |
+                    <TouchableOpacity
+                    style={{ marginTop: 5 }}
+                    onPress={ () => this.logout() }
+                    >
+                        <Text style={{ color: "red" }}>
+                            <Icon name="sign-out-alt" size={40} />
                         </Text>
-                        <TouchableOpacity onPress={() => this.logout()}>
-                            <Text>
-                                Logout
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
+                    </TouchableOpacity>
                 </View>
 
-                <View style={styles.container}>
+                <View>
                     <View style={styles.properties}>
 
                     {
@@ -185,7 +195,7 @@ export default class MyProfile extends React.Component {
 
                             
                             <Text style={styles.editableText}>
-                                {global.user.username}
+                                {this.state.tempUsername}
                             </Text>
 
                             <TouchableOpacity
@@ -234,7 +244,7 @@ export default class MyProfile extends React.Component {
                         <View style={{ flexDirection: "row" }}>
                             
                             <Text style={styles.editableText}>
-                                {global.user.email}
+                                {this.state.tempEmail}
                             </Text>
 
                             <TouchableOpacity
@@ -289,7 +299,7 @@ export default class MyProfile extends React.Component {
                                     Bio
                                 </Text>:
                                 <Text style={styles.editableText}>
-                                    {global.user.pinned}
+                                    {this.state.tempPinned}
                                 </Text>
                             }
                             
@@ -306,15 +316,6 @@ export default class MyProfile extends React.Component {
                     }
                     </View>
                 </View>
-
-                
-
-                <View>
-                    <Text>
-                        {this.state.editableProperty}
-                    </Text>
-                </View>
-                
                 
                 <Modal
                 //--------------------------------------REDIRECT TO LOGIN MODAL---------------------------------------
@@ -330,6 +331,8 @@ export default class MyProfile extends React.Component {
                         
                 </Modal>
             </View>
+            </ImageBackground>
+            
         )
     }
 }
@@ -339,7 +342,8 @@ const styles = StyleSheet.create(
         container: {
             flex: 1,
             justifyContent: "center",
-            alignItems: "center"
+            alignItems: "center",
+            backgroundColor:'rgba(255,255,255,0.7)',
         },
         properties: {
             margin: 10

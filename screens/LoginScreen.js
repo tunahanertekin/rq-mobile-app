@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, Text, StyleSheet, TextInput, TouchableOpacity} from 'react-native'
+import {View, Text, StyleSheet, TextInput, TouchableOpacity, AsyncStorage, TouchableNativeFeedbackBase} from 'react-native'
 
 export default class LoginScreen extends React.Component {
     
@@ -9,13 +9,84 @@ export default class LoginScreen extends React.Component {
     }
 
     state = {
-        username: "tunanzi",
-        password: "123",
+        username: "",
+        password: "",
         loginResponse: "inittt",
         warning: ""
     }
 
-    
+    componentDidMount(){
+        this.readData()
+    }
+
+    saveData = async () => {
+        try {
+            await AsyncStorage.setItem("username", this.state.username)
+            await AsyncStorage.setItem("password", this.state.password)
+        } catch (e) {
+            this.setState({
+                warning: e.message
+            })
+        }
+    }
+
+    readData = async () => {
+        try {
+            const usr = await AsyncStorage.getItem("username")
+            const pass = await AsyncStorage.getItem("password")
+        
+            if (usr !== null) {
+                this.setState({
+                    username: usr,
+                    password: pass
+                })
+
+                this.fastLogin()
+            }
+
+        } catch (e) {
+            this.setState({
+                warning: e.message
+            })
+        }
+    }
+
+    fastLogin = () => {
+        fetch('http://10.0.2.2:3000/login', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "username": this.state.username,
+                "hashedPassword": this.state.password
+            })
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            this.setState({
+                loginResponse: responseJson.status
+            })
+            
+            if(this.state.loginResponse == "SUCCESS"){
+                //assign global user variable
+                global.user = responseJson.data
+                //redirect to UserList
+                this.props.navigation.navigate("LoggedIn")
+            }
+            else{
+                this.setState({
+                    warning: responseJson.message
+                })
+            }
+        })
+        .catch((error) => {
+            this.setState({
+                loginResponse: error.message
+            })
+        })
+    }
 
     sendLoginRequest = () => {
         const {username, password} = this.state
@@ -38,6 +109,7 @@ export default class LoginScreen extends React.Component {
             })
             
             if(this.state.loginResponse == "SUCCESS"){
+                this.saveData()
                 //assign global user variable
                 global.user = responseJson.data
                 //redirect to UserList

@@ -165,6 +165,7 @@ export default class MyQuotes extends React.Component {
     
     render() {
         return(
+            
             <View style={styles.container}>
 
                 <TouchableOpacity
@@ -261,7 +262,7 @@ export default class MyQuotes extends React.Component {
                     <View style={styles.modalView}>
 
                         <View>
-                            <Text style={{ fontSize: 30, color: "lightblue" }}>
+                            <Text style={{ fontSize: 30, color: "black" }}>
                                 Edit Quote
                             </Text>
                         </View>
@@ -299,7 +300,7 @@ export default class MyQuotes extends React.Component {
                                 })
                             } }
                             >
-                                <Text style={{ color: "yellow" }}>
+                                <Text style={{ color: "black" }}>
                                     Done
                                 </Text>
                             </TouchableOpacity>
@@ -308,7 +309,7 @@ export default class MyQuotes extends React.Component {
                             style={{ margin: 10 }}
                             onPress={ () => this.setState({isModalVisible: false}) }
                             >
-                                <Text style={{ color: "yellow" }}>
+                                <Text style={{ color: "black" }}>
                                     Close
                                 </Text>
                             </TouchableOpacity>
@@ -395,6 +396,12 @@ export default class MyQuotes extends React.Component {
                     <View style={styles.modalView}>
 
                         <View>
+                            <Text style={{ fontSize: 30, color: "black" }}>
+                                Add Quote
+                            </Text>
+                        </View>
+
+                        <View>
                             <TextInput style={styles.input}
                             placeholder="Page"
                             onChangeText={ page => this.setState({ tempPage: page }) }
@@ -420,7 +427,7 @@ export default class MyQuotes extends React.Component {
                                 })
                             } }
                             >
-                                <Text style={{ fontSize: 25, color: "yellow" }}>
+                                <Text style={{ fontSize: 25, color: "black" }}>
                                     Add
                                 </Text>
                             </TouchableOpacity>
@@ -429,7 +436,7 @@ export default class MyQuotes extends React.Component {
                             style={{ margin: 10 }}
                             onPress={ () => this.setState({ isAddingModalVisible: false }) }
                             >
-                                <Text style={{ fontSize: 25, color: "yellow" }}>
+                                <Text style={{ fontSize: 25, color: "black" }}>
                                     Close
                                 </Text>
                             </TouchableOpacity>
@@ -454,30 +461,32 @@ const styles = StyleSheet.create(
         modalView: {
             
             alignItems: "center",
-            backgroundColor: "black",
+            backgroundColor: "#DAF7A6",
             padding: 30,
             alignSelf: "center",
             marginTop: 80,
             borderRadius: 20,
-            opacity: 0.85,
+            opacity: 0.94,
             width: 300,
             height: 500,
-            color: "white"
+            color: "black",
+            borderWidth: 4,
+            borderColor: "#C70039"
             
         },
         input: {
             borderBottomColor: "#8A8F9E",
-            borderBottomWidth: StyleSheet.hairlineWidth,
+            borderBottomWidth: 2,
             height: 40,
-            color: "white",
+            color: "red",
             width: 200,
             margin: 20
         },
         bodyInput: {
             borderColor: "#8A8F9E",
-            borderWidth: StyleSheet.hairlineWidth,
+            borderWidth: 2,
             height: 300,
-            color: "white",
+            color: "black",
             width: 200,
             textAlignVertical: "top"
             

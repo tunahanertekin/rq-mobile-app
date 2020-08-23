@@ -18,11 +18,39 @@ import MyQuotes from './screens/modelPages/MyQuotes'
 import AddBook from './screens/functionPages/AddBook'
 import AllQuotePage from './screens/modelPages/AllQuotePage'
 import MyProfile from './screens/tabs/MyProfile'
-
+import UserProfile from './screens/modelPages/UserProfile'
+import BookProfile from './screens/modelPages/BookProfile'
+import QuoteProfile from './screens/modelPages/QuoteProfile'
 
 import TestScreen from './screens/tabs/TestScreen'
 
 console.disableYellowBox = true;
+
+const OtherQuotesStack = createStackNavigator(
+  {
+    UserList: {
+      screen: UserList,
+      navigationOptions: {
+        headerShown: false,
+      }
+    },
+    UserProfile: {
+      screen: UserProfile,
+      navigationOptions: {
+      }
+    },
+    BookProfile: {
+      screen: BookProfile,
+      navigationOptions: {
+      }
+    },
+    QuoteProfile: {
+      screen: QuoteProfile,
+      navigationOptions: {
+      }
+    }
+  }
+)
 
 const MyQuotesStack = createStackNavigator(
   {
@@ -56,6 +84,7 @@ const MyQuotesStack = createStackNavigator(
 const AppTabNavigator = createBottomTabNavigator(
   {
     //TEST SCREEN
+    /*
     Test: {
       screen: TestScreen,
       navigationOptions: {
@@ -65,8 +94,9 @@ const AppTabNavigator = createBottomTabNavigator(
         )
       }
     },
+    */
     UserList: {
-      screen: UserList,
+      screen: OtherQuotesStack,
       navigationOptions: {
         headerShown: false,
         tabBarIcon: () => (
