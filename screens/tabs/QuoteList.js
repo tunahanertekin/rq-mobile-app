@@ -85,7 +85,7 @@ export default class QuoteList extends React.Component {
                                 </View>
                                 <View>
                                     <TouchableOpacity
-                                    onPress={ () => this.props.navigation.navigate("QuoteProfile", { quote: item.quote }) }
+                                    onPress={ () => this.props.navigation.navigate("QuoteProfile", { quote: item.quote, book: item.book, user: item.user }) }
                                     >
                                         <View style={{ flexDirection: "row" }}>
                                             

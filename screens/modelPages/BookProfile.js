@@ -5,9 +5,10 @@ import {
     StyleSheet, 
     TouchableOpacity,
     Image,
-    FlatList,
-    Icon
+    FlatList
 } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome5'
+
 
 export default class BookProfile extends React.Component {
 
@@ -62,6 +63,14 @@ export default class BookProfile extends React.Component {
         return(
             <View style={styles.container}>
 
+                <TouchableOpacity style={{ alignSelf: "flex-start" }}>
+                    <Text
+                    style={{ marginTop: 10, marginHorizontal: 10 }}
+                    onPress={ () => this.props.navigation.goBack() }
+                    >
+                        <Icon name="backward" size={30} />
+                    </Text>
+                </TouchableOpacity>
                 
                 <View style={{ flex: 2, flexDirection: "row" }}>
                     <View style={{ flex: 2 }}>
@@ -89,7 +98,7 @@ export default class BookProfile extends React.Component {
                     </View>
                 </View>
                 <View>
-                    <Text style={{ fontSize: 20, color: "green" }}>
+                    <Text style={{ fontSize: 20, color: "green", marginBottom: 20 }}>
                         Quotes
                     </Text>
                 </View>

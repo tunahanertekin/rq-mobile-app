@@ -1,5 +1,16 @@
 import React from 'react'
-import {View, Text, StyleSheet, TextInput, TouchableOpacity, AsyncStorage, TouchableNativeFeedbackBase} from 'react-native'
+import {
+    View, 
+    Text, 
+    StyleSheet, 
+    TextInput, 
+    TouchableOpacity, 
+    AsyncStorage, 
+    TouchableNativeFeedbackBase
+} from 'react-native'
+
+import Icon from 'react-native-vector-icons/FontAwesome5'
+
 
 export default class LoginScreen extends React.Component {
     
@@ -131,9 +142,17 @@ export default class LoginScreen extends React.Component {
     render() {
         return(
                 <View style={styles.container}>
-                    <Text style={{ margin: 40 }}>
-                        Login Screen
-                    </Text>
+
+                    <View style={{ position: "absolute", margin: 10, top: 0, left: 0 }}>
+                        <TouchableOpacity>
+                            <Text
+                            onPress={ () => this.props.navigation.goBack() }
+                            >
+                                <Icon name="backward" size={30} />
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                    
 
                     <View>
                         <Text style={{ color: "red" }}>

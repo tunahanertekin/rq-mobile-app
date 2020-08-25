@@ -83,7 +83,7 @@ export default class UserProfile extends React.Component {
                     </View>
                 </View>
                 <View>
-                    <Text style={{ fontSize: 20, color: "green" }}>
+                    <Text style={{ fontSize: 20, color: "green", marginBottom: 20 }}>
                         Books({ this.state.booksResponse.booknum })
                     </Text>
                 </View>

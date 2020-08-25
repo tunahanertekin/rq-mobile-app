@@ -204,7 +204,7 @@ export default class MyQuotes extends React.Component {
                     renderItem={({ item }) => 
                     <View style={{ flexDirection: "row" }}>
                         <TouchableOpacity
-                        onPress={ () => this.props.navigation.navigate("AllQuotePage", { quote: item }) }
+                        onPress={ () => this.props.navigation.navigate("AllQuotePage", { book: this.state.book, quote: item }) }
                         >
                             <View style={{ flexDirection: "row" }}>
                                 <View style={{ width: 30, height: 60 }}>

@@ -37,16 +37,19 @@ const OtherQuotesStack = createStackNavigator(
     UserProfile: {
       screen: UserProfile,
       navigationOptions: {
+        headerShown: false
       }
     },
     BookProfile: {
       screen: BookProfile,
       navigationOptions: {
+        headerShown: false
       }
     },
     QuoteProfile: {
       screen: QuoteProfile,
       navigationOptions: {
+        headerShown: false
       }
     }
   }
@@ -75,7 +78,7 @@ const MyQuotesStack = createStackNavigator(
     AllQuotePage: {
       screen: AllQuotePage,
       navigationOptions: {
-        headerShown: true
+        headerShown: false
       }
     }
   }
@@ -99,6 +102,7 @@ const AppTabNavigator = createBottomTabNavigator(
       screen: OtherQuotesStack,
       navigationOptions: {
         headerShown: false,
+        tabBarLabel: "Flow",
         tabBarIcon: () => (
           <Icon name="users" size={30} />
         )
@@ -108,6 +112,7 @@ const AppTabNavigator = createBottomTabNavigator(
       screen: QuoteList,
       navigationOptions: {
         headerShown: false,
+        tabBarLabel: "Random",
         tabBarIcon: () => (
           <Icon name="quote-right" size={30} />
         )
@@ -117,6 +122,7 @@ const AppTabNavigator = createBottomTabNavigator(
       screen: MyQuotesStack,
       navigationOptions: {
         headerShown: false,
+        tabBarLabel: "My Quotes",
         tabBarIcon: () => (
           <Icon name="pen-fancy" size={30} />
         )
@@ -126,6 +132,7 @@ const AppTabNavigator = createBottomTabNavigator(
       screen: MyProfile,
       navigationOptions: {
         headerShown: false,
+        tabBarLabel: "Profile",
         tabBarIcon: () => (
           <Icon name="user-edit" size={30} />
         )
