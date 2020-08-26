@@ -5,7 +5,8 @@ import {View,
         TouchableOpacity,
         FlatList,
         Modal,
-        TextInput
+        TextInput,
+        ImageBackground
     } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
@@ -143,269 +144,274 @@ export default class MyBooks extends React.Component {
 
     render() {
         return(
-                <View style={styles.container}>
 
-                    
-                    
-
+                <ImageBackground
+                source={require("../../images/art.jpg")}
+                style={{width: '100%', height: '100%'}}
+                >
                     <View style={styles.container}>
 
-                        <Text style={{ fontSize: 20, margin: 10 }}>
-                            Library - {this.state.booksResponse.message}
-                        </Text>
+                        <View style={styles.header}>
 
-                        <View style={{flexDirection: "row"}}>
-                            <TouchableOpacity
-                            onPress={()=>this.props.navigation.navigate("AddBook")}
-                            >
-                                <Text style={{ fontSize: 20, margin: 10 }}>
-                                    <Icon name="plus" size={30} />
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                            onPress={()=>this.sendGetBooksRequest()}
-                            >
-                                <Text style={{ fontSize: 20, margin: 10 }}>
-                                    <Icon name="sync" size={30} />
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
-                        
+                            <Text style={{ fontSize: 20, margin: 10 }}>
+                                Library - {this.state.booksResponse.message}
+                            </Text>
 
-                        <FlatList
-                            data={this.state.booksResponse.data}
-                            renderItem={({ item }) => 
-                            <View style={{ flexDirection: "row" }}>
+                            <View style={{flexDirection: "row"}}>
                                 <TouchableOpacity
-                                onPress={ () => this.props.navigation.navigate("MyQuotes", { book: item }) }
+                                onPress={()=>this.props.navigation.navigate("AddBook")}
                                 >
-                                    <View style={{ flexDirection: "row"}}>
-                                        <View style={{ width: 120, height: 60, justifyContent: "center" }}>
-                                            <Text style={{ fontStyle: "italic" }}>
-                                                {item.title}
-                                            </Text>
-                                        </View>
+                                    <Text style={{ fontSize: 20, margin: 10 }}>
+                                        <Icon name="plus" size={30} />
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                onPress={()=>this.sendGetBooksRequest()}
+                                >
+                                    <Text style={{ fontSize: 20, margin: 10 }}>
+                                        <Icon name="sync" size={30} />
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                            
 
-                                        <View style={{ width: 120, height: 60, justifyContent: "center" }}>
+                            <FlatList
+                                data={this.state.booksResponse.data}
+                                renderItem={({ item }) => 
+                                <View style={{ flexDirection: "row" }}>
+                                    <TouchableOpacity
+                                    onPress={ () => this.props.navigation.navigate("MyQuotes", { book: item }) }
+                                    >
+                                        <View style={{ flexDirection: "row"}}>
+                                            <View style={{ width: 120, height: 60, justifyContent: "center" }}>
+                                                <Text style={{ fontStyle: "italic" }}>
+                                                    {item.title}
+                                                </Text>
+                                            </View>
+
+                                            <View style={{ width: 120, height: 60, justifyContent: "center" }}>
+                                                <Text>
+                                                    {item.author}
+                                                </Text>
+                                            </View>
+
+                                            
+                                        </View>
+                                    </TouchableOpacity>
+
+                                    <View style={{ margin: 10 }}>
+                                        <TouchableOpacity
+                                        onPress={() => this.setState({ 
+                                            isEditModalVisible: true ,
+                                            tempBook: item,
+                                            //do this mess
+                                            tempTitle: item.title,
+                                            tempAuthor: item.author,
+                                            tempPublisher: item.publisher,
+                                            tempTranslator: item.translator,
+                                            tempEdition: item.edition,
+                                            tempLanguage: item.language
+                                        })}
+                                        >
                                             <Text>
-                                                {item.author}
+                                                <Icon name="edit" size={30} />
                                             </Text>
-                                        </View>
-
-                                        
+                                        </TouchableOpacity>
                                     </View>
-                                </TouchableOpacity>
 
-                                <View style={{ margin: 10 }}>
-                                    <TouchableOpacity
-                                    onPress={() => this.setState({ 
-                                        isEditModalVisible: true ,
-                                        tempBook: item,
-                                        //do this mess
-                                        tempTitle: item.title,
-                                        tempAuthor: item.author,
-                                        tempPublisher: item.publisher,
-                                        tempTranslator: item.translator,
-                                        tempEdition: item.edition,
-                                        tempLanguage: item.language
-                                    })}
-                                    >
-                                        <Text>
-                                            <Icon name="edit" size={30} />
-                                        </Text>
-                                    </TouchableOpacity>
+                                    <View style={{ margin: 10 }}>
+                                        <TouchableOpacity
+                                        onPress={ () => this.setState({
+                                            isDeleteValidationModalVisible: true,
+                                            tempBook: item
+                                        }) }
+                                        >
+                                            <Text>
+                                                <Icon name="trash-alt" size={30} />
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
+                                
+                                }
+                            />
 
-                                <View style={{ margin: 10 }}>
-                                    <TouchableOpacity
-                                    onPress={ () => this.setState({
-                                        isDeleteValidationModalVisible: true,
-                                        tempBook: item
-                                    }) }
-                                    >
-                                        <Text>
-                                            <Icon name="trash-alt" size={30} />
-                                        </Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                            
-                            }
-                        />
+                        </View>
 
-                    </View>
-
-                    <Modal
-                    //--------------------------------------MESSAGE MODAL---------------------------------------
-                    animationType="slide"
-                    transparent={true}
-                    visible={this.state.isMessageModalVisible}
-                    >
-                        <View style={styles.messageModalView}>
-
-                        <Text style={{ color: "white", fontSize: 20 }}>
-                            {this.state.messageModalText}
-                        </Text>
-
-                        <TouchableOpacity
-                        style={{ margin: 20 }}
-                        onPress={ () => {
-                            this.setState({ isMessageModalVisible: false })
-                            this.sendGetBooksRequest()
-                        } }
+                        <Modal
+                        //--------------------------------------MESSAGE MODAL---------------------------------------
+                        animationType="slide"
+                        transparent={true}
+                        visible={this.state.isMessageModalVisible}
                         >
-                            <Text style={{ fontSize: 25, color: "yellow" }}>
-                                Okay
-                            </Text>
-                        </TouchableOpacity>
+                            <View style={styles.messageModalView}>
 
-                        </View>
-
-                    </Modal>
-
-                    <Modal
-                    //------------------------------------DELETE VALIDATION MODAL--------------------------------------
-                    animationType="slide"
-                    transparent={true}
-                    visible={this.state.isDeleteValidationModalVisible}
-                    >
-                        <View style={styles.messageModalView}> 
                             <Text style={{ color: "white", fontSize: 20 }}>
-                                Are you sure deleting this book?
+                                {this.state.messageModalText}
                             </Text>
 
-                            <View style={{ flexDirection: "row" }}>
-                                <TouchableOpacity
-                                style={{ margin: 10 }}
-                                onPress={ () => {
-                                    this.sendDeleteBookRequest()
-                                    
-                                    this.setState({ 
-                                        isDeleteValidationModalVisible: false, 
-                                        isMessageModalVisible: true, 
-                                    })
-                                } }
-                                >
-                                    <Text style={{ fontSize: 25, color: "yellow" }}>
-                                        Yes
-                                    </Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                style={{ margin: 10 }}
-                                onPress={ () => this.setState({ isDeleteValidationModalVisible: false }) }
-                                >
-                                    <Text style={{ fontSize: 25, color: "yellow" }}>
-                                        No
-                                    </Text>
-                                </TouchableOpacity>
+                            <TouchableOpacity
+                            style={{ margin: 20 }}
+                            onPress={ () => {
+                                this.setState({ isMessageModalVisible: false })
+                                this.sendGetBooksRequest()
+                            } }
+                            >
+                                <Text style={{ fontSize: 25, color: "yellow" }}>
+                                    Okay
+                                </Text>
+                            </TouchableOpacity>
+
                             </View>
-                            
-                        </View>
 
-                    </Modal>
+                        </Modal>
 
-
-                    <Modal
-                    //--------------------------------------EDIT MODAL---------------------------------------
-                    animationType="slide"
-                    transparent={true}
-                    visible={this.state.isEditModalVisible}
-                    >
-                        <View style={styles.modalView}>
-
-
-                                <View>
-                                    <Text style={{ fontSize: 30, color: "yellow"  }}>
-                                        Edit Book
-                                    </Text>
-                                </View>
-
-                                <View>
-                                    <TextInput style={styles.input}
-                                    placeholder="title"
-                                    placeholderTextColor="yellow"
-                                    onChangeText={ title => this.setState({ tempTitle: title }) }
-                                    defaultValue={this.state.tempBook.title}
-                                    />
-                                </View>
-
-                                <View>
-                                    <TextInput style={styles.input}
-                                    placeholder="author"
-                                    placeholderTextColor="yellow"
-                                    onChangeText={ author => this.setState({ tempAuthor: author }) }
-                                    defaultValue={this.state.tempBook.author}
-                                    />
-                                </View>
-
-                                <View>
-                                    <TextInput style={styles.input}
-                                    placeholder="publisher"
-                                    placeholderTextColor="yellow"
-                                    onChangeText={ publisher => this.setState({ tempPublisher: publisher }) }
-                                    defaultValue={ this.state.tempBook.publisher }
-                                    />
-                                </View>
-
-                                <View>
-                                    <TextInput style={styles.input}
-                                    placeholder="translator"
-                                    placeholderTextColor="yellow"
-                                    onChangeText={ translator => this.setState({ tempTranslator: translator }) }
-                                    defaultValue={ this.state.tempBook.translator }
-                                    />
-                                </View>
-
-                                <View>
-                                    <TextInput style={styles.input}
-                                    placeholder="edition"
-                                    placeholderTextColor="yellow"
-                                    onChangeText={ edition => this.setState({ tempEdition: edition }) }
-                                    defaultValue={ this.state.tempBook.edition.toString() }
-                                    />
-                                </View>
-
-                                <View>
-                                    <TextInput style={styles.input}
-                                    placeholder="language"
-                                    placeholderTextColor="yellow"
-                                    onChangeText={ language => this.setState({ tempLanguage: language }) }
-                                    defaultValue={ this.state.tempBook.language }
-                                    />
-                                </View>
+                        <Modal
+                        //------------------------------------DELETE VALIDATION MODAL--------------------------------------
+                        animationType="slide"
+                        transparent={true}
+                        visible={this.state.isDeleteValidationModalVisible}
+                        >
+                            <View style={styles.messageModalView}> 
+                                <Text style={{ color: "white", fontSize: 20 }}>
+                                    Are you sure deleting this book?
+                                </Text>
 
                                 <View style={{ flexDirection: "row" }}>
-
                                     <TouchableOpacity
                                     style={{ margin: 10 }}
-                                    onPress={() => {
-                                        this.sendUpdateBookRequest()
-                                        this.setState({
-                                            isEditModalVisible: false,
-                                            isMessageModalVisible: true
+                                    onPress={ () => {
+                                        this.sendDeleteBookRequest()
+                                        
+                                        this.setState({ 
+                                            isDeleteValidationModalVisible: false, 
+                                            isMessageModalVisible: true, 
                                         })
-                                    }}
+                                    } }
                                     >
-                                        <Text style={{ color: "yellow" }}>
-                                            Done
+                                        <Text style={{ fontSize: 25, color: "yellow" }}>
+                                            Yes
                                         </Text>
                                     </TouchableOpacity>
-
                                     <TouchableOpacity
                                     style={{ margin: 10 }}
-                                    onPress={() => this.setState({ isEditModalVisible: false })}
+                                    onPress={ () => this.setState({ isDeleteValidationModalVisible: false }) }
                                     >
-                                        <Text style={{ color: "yellow" }}>
-                                            Close
+                                        <Text style={{ fontSize: 25, color: "yellow" }}>
+                                            No
                                         </Text>
                                     </TouchableOpacity>
                                 </View>
                                 
                             </View>
-                            
-                    </Modal>
-                    
-                </View>
+
+                        </Modal>
+
+
+                        <Modal
+                        //--------------------------------------EDIT MODAL---------------------------------------
+                        animationType="slide"
+                        transparent={true}
+                        visible={this.state.isEditModalVisible}
+                        >
+                            <View style={styles.modalView}>
+
+
+                                    <View>
+                                        <Text style={{ fontSize: 30, color: "yellow"  }}>
+                                            Edit Book
+                                        </Text>
+                                    </View>
+
+                                    <View>
+                                        <TextInput style={styles.input}
+                                        placeholder="title"
+                                        placeholderTextColor="yellow"
+                                        onChangeText={ title => this.setState({ tempTitle: title }) }
+                                        defaultValue={this.state.tempBook.title}
+                                        />
+                                    </View>
+
+                                    <View>
+                                        <TextInput style={styles.input}
+                                        placeholder="author"
+                                        placeholderTextColor="yellow"
+                                        onChangeText={ author => this.setState({ tempAuthor: author }) }
+                                        defaultValue={this.state.tempBook.author}
+                                        />
+                                    </View>
+
+                                    <View>
+                                        <TextInput style={styles.input}
+                                        placeholder="publisher"
+                                        placeholderTextColor="yellow"
+                                        onChangeText={ publisher => this.setState({ tempPublisher: publisher }) }
+                                        defaultValue={ this.state.tempBook.publisher }
+                                        />
+                                    </View>
+
+                                    <View>
+                                        <TextInput style={styles.input}
+                                        placeholder="translator"
+                                        placeholderTextColor="yellow"
+                                        onChangeText={ translator => this.setState({ tempTranslator: translator }) }
+                                        defaultValue={ this.state.tempBook.translator }
+                                        />
+                                    </View>
+
+                                    <View>
+                                        <TextInput style={styles.input}
+                                        placeholder="edition"
+                                        placeholderTextColor="yellow"
+                                        onChangeText={ edition => this.setState({ tempEdition: edition }) }
+                                        defaultValue={ this.state.tempBook.edition.toString() }
+                                        />
+                                    </View>
+
+                                    <View>
+                                        <TextInput style={styles.input}
+                                        placeholder="language"
+                                        placeholderTextColor="yellow"
+                                        onChangeText={ language => this.setState({ tempLanguage: language }) }
+                                        defaultValue={ this.state.tempBook.language }
+                                        />
+                                    </View>
+
+                                    <View style={{ flexDirection: "row" }}>
+
+                                        <TouchableOpacity
+                                        style={{ margin: 10 }}
+                                        onPress={() => {
+                                            this.sendUpdateBookRequest()
+                                            this.setState({
+                                                isEditModalVisible: false,
+                                                isMessageModalVisible: true
+                                            })
+                                        }}
+                                        >
+                                            <Text style={{ color: "yellow" }}>
+                                                Done
+                                            </Text>
+                                        </TouchableOpacity>
+
+                                        <TouchableOpacity
+                                        style={{ margin: 10 }}
+                                        onPress={() => this.setState({ isEditModalVisible: false })}
+                                        >
+                                            <Text style={{ color: "yellow" }}>
+                                                Close
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                    
+                                </View>
+                                
+                        </Modal>
+
+                    </View>
+
+                </ImageBackground>
+                
         )
     }
 }
@@ -416,7 +422,13 @@ const styles = StyleSheet.create(
         container: {
             flex: 1,
             justifyContent: "center",
-            alignItems: "center"
+            alignItems: "center",
+            backgroundColor:'rgba(255,255,255,0.7)',
+        },
+        header: {
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
         },
         modalView: {
             

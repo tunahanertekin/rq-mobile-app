@@ -12,6 +12,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
 
+
 export default class MyProfile extends React.Component {
 
     state= {
@@ -26,6 +27,7 @@ export default class MyProfile extends React.Component {
 
         isMessageModalVisible: false,
         messageModalText: "messagemodaltextinit"
+
     }
 
     //handles logging out
@@ -134,7 +136,7 @@ export default class MyProfile extends React.Component {
         return(
 
             <ImageBackground
-            source={{ uri: 'https://images.pexels.com/photos/159872/book-open-pages-literature-159872.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' }}
+            source={require("../../images/italy.jpg")}
             style={{width: '100%', height: '100%'}}
             > 
                 <View style={styles.container}>

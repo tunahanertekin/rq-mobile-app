@@ -1,5 +1,15 @@
 import React from 'react'
-import {View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native'
+import {
+    View, 
+    Text, 
+    StyleSheet, 
+    TouchableOpacity, 
+    TextInput,
+    ImageBackground
+} from 'react-native'
+
+import Icon from 'react-native-vector-icons/FontAwesome5'
+
 
 export default class AddBook extends React.Component {
 
@@ -55,36 +65,57 @@ export default class AddBook extends React.Component {
 
     render() {
         return(
-            <View style={styles.container}>
-                <Text style={{ margin: 20 }}>
-                    Add A New Book - {this.state.message}
-                </Text>
 
-                <View>
-                    <TextInput style={styles.input}
-                    placeholder="Title"
-                    onChangeText={ title => this.setState({ title }) }
-                    value={ this.state.title }
-                    />
-                </View>
-                
-                <View>
-                    <TextInput style={styles.input}
-                    placeholder="Author"
-                    onChangeText={ author => this.setState({ author }) }
-                    value={ this.state.author }
-                    />
-                </View>
+            <ImageBackground
+            source={require("../../images/picture.jpg")}
+            style={{width: '100%', height: '100%'}}
+            >
 
-                <TouchableOpacity style={{margin: 20}}
-                onPress={()=>this.sendAddBookRequest()}
-                >
-                    <Text>
-                        Add
+
+                <View style={styles.container}>
+
+                    <TouchableOpacity
+                    style={{ position: "absolute", top: 0, left: 0 }}
+                    onPress={ () => this.props.navigation.goBack() }
+                    >
+                        <Text style={{ margin: 10 }}>
+                            <Icon name="backward" size={30} />
+                        </Text>
+                    </TouchableOpacity>
+
+                    <Text style={{ margin: 20 }}>
+                        Add A New Book
                     </Text>
-                </TouchableOpacity>
 
-            </View>
+                    <View>
+                        <TextInput style={styles.input}
+                        placeholder="Title"
+                        onChangeText={ title => this.setState({ title }) }
+                        value={ this.state.title }
+                        />
+                    </View>
+                    
+                    <View>
+                        <TextInput style={styles.input}
+                        placeholder="Author"
+                        onChangeText={ author => this.setState({ author }) }
+                        value={ this.state.author }
+                        />
+                    </View>
+
+                    <TouchableOpacity style={{margin: 20}}
+                    onPress={()=>this.sendAddBookRequest()}
+                    >
+                        <Text>
+                            Add
+                        </Text>
+                    </TouchableOpacity>
+
+                </View>
+
+            </ImageBackground>
+            
+            
         )
     }
 }
@@ -94,7 +125,8 @@ const styles = StyleSheet.create(
         container: {
             flex: 1,
             justifyContent: "center",
-            alignItems: "center"
+            alignItems: "center",
+            backgroundColor:'rgba(255,255,255,0.7)'
         },
         input: {
             borderBottomColor: "#8A8F9E",

@@ -10,6 +10,8 @@ import {
 } from 'react-native'
 
 import Icon from 'react-native-vector-icons/FontAwesome5'
+import { sha512 } from 'react-native-sha512';
+
 
 
 export default class LoginScreen extends React.Component {
@@ -22,6 +24,8 @@ export default class LoginScreen extends React.Component {
     state = {
         username: "",
         password: "",
+        hashedPassword: "",
+        tempPassword: "",
         loginResponse: "inittt",
         warning: ""
     }
@@ -47,11 +51,15 @@ export default class LoginScreen extends React.Component {
             const pass = await AsyncStorage.getItem("password")
         
             if (usr !== null) {
-                this.setState({
-                    username: usr,
-                    password: pass
-                })
+                
 
+                sha512(pass).then( hash => {
+                    this.setState({
+                        username: usr,
+                        password: pass,
+                        tempPassword: hash
+                    })
+                })
                 this.fastLogin()
             }
 
@@ -62,7 +70,13 @@ export default class LoginScreen extends React.Component {
         }
     }
 
+    updatePassword = () => {
+        
+    }
+
     fastLogin = () => {
+
+        
         fetch('http://10.0.2.2:3000/login', {
             method: 'POST',
             headers: {
@@ -71,7 +85,7 @@ export default class LoginScreen extends React.Component {
             },
             body: JSON.stringify({
                 "username": this.state.username,
-                "hashedPassword": this.state.password
+                "hashedPassword": this.state.tempPassword
             })
         })
         .then((response) => response.json())
@@ -102,6 +116,12 @@ export default class LoginScreen extends React.Component {
     sendLoginRequest = () => {
         const {username, password} = this.state
 
+        sha512(this.state.password).then( hash => {
+            this.setState({
+                tempPassword: hash
+            })
+        })
+
         fetch('http://10.0.2.2:3000/login', {
             method: 'POST',
             headers: {
@@ -110,7 +130,7 @@ export default class LoginScreen extends React.Component {
             },
             body: JSON.stringify({
                 "username": this.state.username,
-                "hashedPassword": this.state.password
+                "hashedPassword": this.state.tempPassword
             })
         })
         .then((response) => response.json())
@@ -156,7 +176,7 @@ export default class LoginScreen extends React.Component {
 
                     <View>
                         <Text style={{ color: "red" }}>
-                            {this.state.warning}
+                            {this.state.warning}-{this.state.tempPassword}
                         </Text>
                     </View>
                     
