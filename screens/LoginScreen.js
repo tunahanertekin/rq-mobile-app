@@ -5,7 +5,8 @@ import {
     StyleSheet, 
     TextInput, 
     TouchableOpacity, 
-    AsyncStorage
+    AsyncStorage,
+    ImageBackground
 } from 'react-native'
 
 import Icon from 'react-native-vector-icons/FontAwesome5'
@@ -37,8 +38,9 @@ export default class LoginScreen extends React.Component {
             })
         })
 
-        this.fastLogin()
-
+        if(this.state.username != "" && this.state.password !=""){
+            this.fastLogin()
+        }
 
     }
 
@@ -58,7 +60,7 @@ export default class LoginScreen extends React.Component {
             const usr = await AsyncStorage.getItem("username")
             const pass = await AsyncStorage.getItem("password")
         
-            if (usr !== null) {
+            if (usr !== null ) {
                 
                 this.setState({
                     username: usr,
@@ -115,10 +117,10 @@ export default class LoginScreen extends React.Component {
         })
     }
 
-    sendLoginRequest = () => {
+    sendLoginRequest = async() => {
         const {username, password} = this.state
 
-        sha512(this.state.password).then( hash => {
+        await sha512(this.state.password).then( hash => {
             this.setState({
                 tempPassword: hash
             })
@@ -163,8 +165,13 @@ export default class LoginScreen extends React.Component {
 
     render() {
         return(
-                <View style={styles.container}>
 
+            <ImageBackground
+            source={require("../images/fist.jpg")}
+            style={{width: '100%', height: '100%'}}
+            >
+                
+                <View style={styles.container}>
                     <View style={{ position: "absolute", margin: 10, top: 0, left: 0 }}>
                         <TouchableOpacity>
                             <Text
@@ -174,40 +181,55 @@ export default class LoginScreen extends React.Component {
                             </Text>
                         </TouchableOpacity>
                     </View>
-                    
 
-                    <View>
-                        <Text style={{ color: "red" }}>
-                            {this.state.warning}
+                    <View style={{ flex: 1 }}>
+                        <Text style={styles.appHeader}>
+                            read&quote
                         </Text>
                     </View>
-                    
-                    <View>
-                        <TextInput style={styles.input}
-                        placeholder="Username"
-                        onChangeText={ username => this.setState({ username }) }
-                        value={ this.state.username }
-                        />
-                    </View>
-                    
-                    <View>
-                        <TextInput style={styles.input}
-                        placeholder="Password"
-                        secureTextEntry
-                        onChangeText={ password => this.setState({ password }) }
-                        value={ this.state.password }
-                        />
-                    </View>
 
-                    <View style={{ margin: 40 }}>
-                        <TouchableOpacity onPress={ () => this.sendLoginRequest() } >
-                            <Text>
-                                Login
+                    <View style={{ flex: 3, alignItems: "center" }}>
+                        
+
+
+                        <View>
+                            <Text style={{ color: "red" }}>
+                                {this.state.warning}
                             </Text>
-                        </TouchableOpacity>
+                        </View>
+
+                        <View>
+                            <TextInput style={styles.input}
+                            placeholder="Username"
+                            onChangeText={ username => this.setState({ username }) }
+                            value={ this.state.username }
+                            />
+                        </View>
+
+                        <View>
+                            <TextInput style={styles.input}
+                            placeholder="Password"
+                            secureTextEntry
+                            onChangeText={ password => this.setState({ password }) }
+                            value={ this.state.password }
+                            />
+                        </View>
+
+                        <View style={styles.buttons}>
+                            <TouchableOpacity 
+                            style={ styles.buttonText }
+                            onPress={ () => this.sendLoginRequest() } 
+                            >
+                                <Text>
+                                    Login
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
 
                 </View>
+            </ImageBackground>
+                
         )
     }
 }
@@ -218,15 +240,32 @@ const styles = StyleSheet.create(
         container: {
             flex: 1,
             justifyContent: "center",
-            alignItems: "center"
+            alignItems: "center",
+            backgroundColor:'rgba(255,255,255,0.7)'
         },
         input: {
             borderBottomColor: "#8A8F9E",
             borderBottomWidth: StyleSheet.hairlineWidth,
             height: 40,
             color: "black",
-            width: 200
-            
+            width: 200,
+        },
+        buttons: {
+            margin: 10,
+            borderWidth: 5,
+            padding: 4,
+            borderRadius: 2,
+            backgroundColor: "#f1948a80",
+            borderColor: "#11050490"
+        },
+        buttonText: {
+            fontFamily: "monospace",
+            fontWeight: "bold",
+        },
+        appHeader: {
+            fontSize: 50,
+            fontFamily: "monospace",
+            justifyContent: "flex-end"
         }
     }
 )

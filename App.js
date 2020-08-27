@@ -10,6 +10,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 import LoadingScreen from './screens/LoadingScreen'
 import HomeScreen from './screens/HomeScreen'
 import LoginScreen from './screens/LoginScreen'
+import RegisterScreen from './screens/RegisterScreen'
 
 import UserList from './screens/tabs/UserList'
 import QuoteList from './screens/tabs/QuoteList'
@@ -152,6 +153,12 @@ const AppStack = createStackNavigator(
     },
     Login: {
       screen: LoginScreen,
+      navigationOptions: {
+        headerShown: false
+      }
+    },
+    Register: {
+      screen: RegisterScreen,
       navigationOptions: {
         headerShown: false
       }
