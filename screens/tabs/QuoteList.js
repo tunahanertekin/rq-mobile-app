@@ -5,7 +5,8 @@ import {
     StyleSheet, 
     TouchableOpacity,
     FlatList,
-    ImageBackground
+    ImageBackground,
+    RefreshControl
 } from 'react-native'
 import { useHeaderHeight } from 'react-navigation-stack';
 
@@ -13,27 +14,13 @@ export default class QuoteList extends React.Component {
 
     state = {
         randomQuotesResponse: {},
-        error: ""
+        error: "",
+
+        refreshing: false
     }
 
     componentDidMount(){
-        fetch('http://10.0.2.2:3000/random')
-        .then((response) => response.json())
-        .then((responseJson) => {
-            this.setState({
-                randomQuotesResponse: responseJson,
-            })
-            if(responseJson.status == "FAILURE"){
-                this.setState({
-                    error: responseJson.message
-                })
-            }
-        })
-        .catch((error) => {
-            this.setState({
-                error: error.message
-            })
-        });
+        this.sendGetRandomQuotesRequest()
     }
 
     sendGetRandomQuotesRequest = () => {
@@ -56,10 +43,16 @@ export default class QuoteList extends React.Component {
         });
     }
 
-    //handles logging out
-    logout = () => {
-        global.user = {}
-        this.props.navigation.navigate("App")
+    onRefresh = () => {
+        this.setState({
+            refreshing: true
+        })
+
+        this.sendGetRandomQuotesRequest()
+
+        this.setState({
+            refreshing: false
+        })
     }
 
     render() {
@@ -79,6 +72,7 @@ export default class QuoteList extends React.Component {
 
                         <FlatList
                             data={this.state.randomQuotesResponse.data}
+                            refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />}
                             renderItem={({ item }) => 
                             <View style={{ flexDirection: "row",borderBottomColor: "white", borderBottomWidth: StyleSheet.hairlineWidth, borderStyle: "dashed" }}>
                                 <View>

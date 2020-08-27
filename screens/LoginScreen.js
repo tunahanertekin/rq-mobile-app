@@ -5,14 +5,11 @@ import {
     StyleSheet, 
     TextInput, 
     TouchableOpacity, 
-    AsyncStorage, 
-    TouchableNativeFeedbackBase
+    AsyncStorage
 } from 'react-native'
 
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { sha512 } from 'react-native-sha512';
-
-
 
 export default class LoginScreen extends React.Component {
     
@@ -30,8 +27,19 @@ export default class LoginScreen extends React.Component {
         warning: ""
     }
 
-    componentDidMount(){
-        this.readData()
+    async componentDidMount(){
+        
+        await this.readData()
+
+        await sha512(this.state.password).then( hash => {
+            this.setState({
+                tempPassword: hash
+            })
+        })
+
+        this.fastLogin()
+
+
     }
 
     saveData = async () => {
@@ -52,15 +60,10 @@ export default class LoginScreen extends React.Component {
         
             if (usr !== null) {
                 
-
-                sha512(pass).then( hash => {
-                    this.setState({
-                        username: usr,
-                        password: pass,
-                        tempPassword: hash
-                    })
+                this.setState({
+                    username: usr,
+                    password: pass
                 })
-                this.fastLogin()
             }
 
         } catch (e) {
@@ -75,7 +78,6 @@ export default class LoginScreen extends React.Component {
     }
 
     fastLogin = () => {
-
         
         fetch('http://10.0.2.2:3000/login', {
             method: 'POST',
@@ -176,7 +178,7 @@ export default class LoginScreen extends React.Component {
 
                     <View>
                         <Text style={{ color: "red" }}>
-                            {this.state.warning}-{this.state.tempPassword}
+                            {this.state.warning}
                         </Text>
                     </View>
                     
