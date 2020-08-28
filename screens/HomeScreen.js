@@ -18,10 +18,27 @@ export default class HomeScreen extends React.Component {
                 >
                     <View style={styles.container}>
                         
-                        <View style={{ flex: 1 }}>
+                        <View style={{ flex: 1, alignItems: "center" }}>
                             <Text style={styles.appHeader}>
                                 read&quote
                             </Text>
+                            
+                            <TouchableOpacity 
+                            onPress={() => this.props.navigation.navigate("FlowOffline")} 
+                            style={styles.buttonsTop}
+                            >
+                                <Text style={styles.buttonTextTop}>
+                                    &nbsp;Flow&nbsp;
+                                </Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity 
+                            onPress={ () => this.props.navigation.navigate("RandomOffline") }
+                            style={styles.buttonsTop}>
+                                <Text style={styles.buttonTextTop}>
+                                    &nbsp;Random&nbsp;
+                                </Text>
+                            </TouchableOpacity>
                         </View>
                         <View style={{ flex: 2 }}>
                             <View style={styles.down}>
@@ -85,6 +102,21 @@ const styles = StyleSheet.create(
             fontSize: 50,
             fontFamily: "monospace",
             justifyContent: "flex-end"
-        }
+        },
+        buttonsTop: {
+            margin: 10,
+            borderWidth: 5,
+            padding: 4,
+            borderRadius: 2,
+            backgroundColor: "#FFC30070",
+            borderColor: "#11050490",
+            marginTop: 20,
+            justifyContent: "flex-end"
+        },
+        buttonTextTop: {
+            fontFamily: "monospace",
+            fontWeight: "bold",
+            fontStyle: "italic"
+        },
     }
 )

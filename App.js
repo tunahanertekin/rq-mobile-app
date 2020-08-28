@@ -11,6 +11,12 @@ import LoadingScreen from './screens/LoadingScreen'
 import HomeScreen from './screens/HomeScreen'
 import LoginScreen from './screens/LoginScreen'
 import RegisterScreen from './screens/RegisterScreen'
+import FlowOffline from './screens/FlowOffline'
+import RandomOffline from './screens/RandomOffline'
+import UserProfileOffline from './screens/offline/UserProfileOffline'
+import BookProfileOffline from './screens/offline/BookProfileOffline'
+import QuoteProfileOffline from './screens/offline/QuoteProfileOffline'
+
 
 import UserList from './screens/tabs/UserList'
 import QuoteList from './screens/tabs/QuoteList'
@@ -162,7 +168,37 @@ const AppStack = createStackNavigator(
       navigationOptions: {
         headerShown: false
       }
-    }
+    },
+    FlowOffline: {
+      screen: FlowOffline,
+      navigationOptions: {
+        headerShown: false
+      }
+    },
+    RandomOffline: {
+      screen: RandomOffline,
+      navigationOptions: {
+        headerShown: false
+      }
+    },
+    UserProfileOffline: {
+      screen: UserProfileOffline,
+      navigationOptions: {
+        headerShown: false
+      }
+    },
+    BookProfileOffline: {
+      screen: BookProfileOffline,
+      navigationOptions: {
+        headerShown: false
+      }
+    },
+    QuoteProfileOffline: {
+      screen: QuoteProfileOffline,
+      navigationOptions: {
+        headerShown: false
+      }
+    },
   }
 )
 

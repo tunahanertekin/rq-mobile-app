@@ -110,7 +110,7 @@ export default class UserProfileOffline extends React.Component {
                                 <View style={{ flexDirection: "row", margin: 10 }}>
                                     <TouchableOpacity 
                                     style={{ flex: 3 }}
-                                    onPress={ () => this.props.navigation.navigate("BookProfile", { book: item.book, user: this.state.user }) }
+                                    onPress={ () => this.props.navigation.navigate("BookProfileOffline", { book: item.book, user: this.state.user }) }
                                     >
                                         <View style={{ alignItems: "center" }}>
                                             <Text style={{ fontSize: 15 }}>
@@ -122,7 +122,7 @@ export default class UserProfileOffline extends React.Component {
 
                                     <TouchableOpacity 
                                     style={{ flex: 4 }}
-                                    onPress={ () => this.props.navigation.navigate("BookProfile", { book: item.book, user: this.state.user }) }
+                                    onPress={ () => this.props.navigation.navigate("BookProfileOffline", { book: item.book, user: this.state.user }) }
                                     >
                                         <View style={{ alignItems: "center" }}>
                                             <Text style={{ fontSize: 15 }}>
@@ -134,7 +134,7 @@ export default class UserProfileOffline extends React.Component {
 
                                     <TouchableOpacity 
                                     style={{ flex: 1 }}
-                                    onPress={ () => this.props.navigation.navigate("BookProfile", { book: item.book, user: this.state.user }) }
+                                    onPress={ () => this.props.navigation.navigate("BookProfileOffline", { book: item.book, user: this.state.user }) }
                                     >
                                         <View style={{ alignItems: "center" }}>
                                             <Text style={{ fontSize: 15 }}>
