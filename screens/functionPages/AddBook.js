@@ -23,7 +23,7 @@ export default class AddBook extends React.Component {
     sendAddBookRequest = () => {
         const {title, author} = this.state
 
-        fetch('http://10.0.2.2:3000/users/' + global.user.id + "/books", {
+        fetch('https://rq-api.herokuapp.com/users/' + global.user.id + "/books", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

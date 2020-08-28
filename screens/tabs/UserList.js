@@ -26,7 +26,7 @@ export default class UserList extends React.Component {
     }
 
     sendGetLastQuotesRequest = () => {
-        fetch('http://10.0.2.2:3000/flow')
+        fetch('https://rq-api.herokuapp.com/flow')
         .then((response) => response.json())
         .then((responseJson) => {
             this.setState({

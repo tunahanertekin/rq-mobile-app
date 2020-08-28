@@ -43,7 +43,7 @@ export default class MyProfile extends React.Component {
     }
 
     sendUpdateUsername = () => {
-        fetch('http://10.0.2.2:3000/users/' + global.user.id, {
+        fetch('https://rq-api.herokuapp.com/users/' + global.user.id, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
@@ -73,7 +73,7 @@ export default class MyProfile extends React.Component {
 
 
     sendUpdateEmail = () => {
-        fetch('http://10.0.2.2:3000/users/' + global.user.id, {
+        fetch('https://rq-api.herokuapp.com/users/' + global.user.id, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
@@ -104,7 +104,7 @@ export default class MyProfile extends React.Component {
 
 
     sendUpdatePinned = () => {
-        fetch('http://10.0.2.2:3000/users/' + global.user.id, {
+        fetch('https://rq-api.herokuapp.com/users/' + global.user.id, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',

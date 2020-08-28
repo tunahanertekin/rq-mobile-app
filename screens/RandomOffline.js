@@ -26,7 +26,7 @@ export default class RandomOffline extends React.Component {
     }
 
     sendGetRandomQuotesRequest = () => {
-        fetch('http://10.0.2.2:3000/random')
+        fetch('https://rq-api.herokuapp.com/random')
         .then((response) => response.json())
         .then((responseJson) => {
             this.setState({

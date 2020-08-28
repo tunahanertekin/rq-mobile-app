@@ -40,7 +40,7 @@ export default class MyBooks extends React.Component {
 
 
     componentDidMount(){
-        fetch('http://10.0.2.2:3000/users/'+global.user.id+"/books")
+        fetch('https://rq-api.herokuapp.com/users/'+global.user.id+"/books")
         .then((response) => response.json())
         .then((responseJson) => {
             this.setState({
@@ -72,7 +72,7 @@ export default class MyBooks extends React.Component {
 
 
     sendGetBooksRequest = () => {
-        fetch('http://10.0.2.2:3000/users/'+global.user.id+"/books")
+        fetch('https://rq-api.herokuapp.com/users/'+global.user.id+"/books")
         .then((response) => response.json())
         .then((responseJson) => {
             this.setState({
@@ -93,7 +93,7 @@ export default class MyBooks extends React.Component {
 
 
     sendUpdateBookRequest = () => {
-        fetch('http://10.0.2.2:3000/users/' + global.user.id + "/books/" + this.state.tempBook.id, {
+        fetch('https://rq-api.herokuapp.com/users/' + global.user.id + "/books/" + this.state.tempBook.id, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
@@ -124,7 +124,7 @@ export default class MyBooks extends React.Component {
 
 
     sendDeleteBookRequest = () => {
-        fetch('http://10.0.2.2:3000/users/' + global.user.id + "/books/" + this.state.tempBook.id , {
+        fetch('https://rq-api.herokuapp.com/users/' + global.user.id + "/books/" + this.state.tempBook.id , {
             method: 'DELETE'
         })
         .then((response) => response.json())

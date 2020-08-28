@@ -44,7 +44,7 @@ export default class MyQuotes extends React.Component {
 
     
     componentDidMount(){
-        fetch('http://10.0.2.2:3000/users/' + global.user.id + "/books/" + this.state.book.id + "/quotes")
+        fetch('https://rq-api.herokuapp.com/users/' + global.user.id + "/books/" + this.state.book.id + "/quotes")
         .then((response) => response.json())
         .then((responseJson) => {
             this.setState({
@@ -64,7 +64,7 @@ export default class MyQuotes extends React.Component {
     }
 
     sendGetQuotesRequest = () => {
-        fetch('http://10.0.2.2:3000/users/' + global.user.id + "/books/" + this.state.book.id + "/quotes")
+        fetch('https://rq-api.herokuapp.com/users/' + global.user.id + "/books/" + this.state.book.id + "/quotes")
         .then((response) => response.json())
         .then((responseJson) => {
             this.setState({
@@ -86,7 +86,7 @@ export default class MyQuotes extends React.Component {
 
     sendEditQuoteRequest = () => {
 
-        fetch('http://10.0.2.2:3000/users/' + global.user.id + "/books/" + this.state.book.id + "/quotes/" + this.state.tempQuote.id, {
+        fetch('https://rq-api.herokuapp.com/users/' + global.user.id + "/books/" + this.state.book.id + "/quotes/" + this.state.tempQuote.id, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
@@ -115,7 +115,7 @@ export default class MyQuotes extends React.Component {
 
 
     sendDeleteQuoteRequest = () => {
-        fetch('http://10.0.2.2:3000/users/' + global.user.id + "/books/" + this.state.book.id + "/quotes/" + this.state.tempQuote.id, {
+        fetch('https://rq-api.herokuapp.com/users/' + global.user.id + "/books/" + this.state.book.id + "/quotes/" + this.state.tempQuote.id, {
             method: 'DELETE'
         })
         .then((response) => response.json())
@@ -134,7 +134,7 @@ export default class MyQuotes extends React.Component {
 
 
     sendAddQuoteRequest = () => {
-        fetch('http://10.0.2.2:3000/users/' + global.user.id + "/books/" + this.state.book.id + "/quotes", {
+        fetch('https://rq-api.herokuapp.com/users/' + global.user.id + "/books/" + this.state.book.id + "/quotes", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

@@ -81,7 +81,7 @@ export default class LoginScreen extends React.Component {
 
     fastLogin = () => {
         
-        fetch('http://10.0.2.2:3000/login', {
+        fetch('https://rq-api.herokuapp.com/login', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -126,7 +126,7 @@ export default class LoginScreen extends React.Component {
             })
         })
 
-        fetch('http://10.0.2.2:3000/login', {
+        fetch('https://rq-api.herokuapp.com/login', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

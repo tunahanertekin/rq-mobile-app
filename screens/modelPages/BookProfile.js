@@ -21,7 +21,7 @@ export default class BookProfile extends React.Component {
 
 
     componentDidMount(){
-        fetch('http://10.0.2.2:3000/users/'+this.state.user.id+"/books/" + this.state.book.id + "/quotes")
+        fetch('https://rq-api.herokuapp.com/users/'+this.state.user.id+"/books/" + this.state.book.id + "/quotes")
         .then((response) => response.json())
         .then((responseJson) => {
             this.setState({
@@ -41,7 +41,7 @@ export default class BookProfile extends React.Component {
     }
 
     sendGetQuotesRequest = () => {
-        fetch('http://10.0.2.2:3000/users/'+this.state.user.id+"/books/" + this.state.book.id + "/quotes")
+        fetch('https://rq-api.herokuapp.com/users/'+this.state.user.id+"/books/" + this.state.book.id + "/quotes")
         .then((response) => response.json())
         .then((responseJson) => {
             this.setState({

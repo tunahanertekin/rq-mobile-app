@@ -38,7 +38,7 @@ export default class RegisterScreen extends React.Component {
         //no fast login
         await AsyncStorage.clear()
 
-        fetch('http://10.0.2.2:3000/users', {
+        fetch('https://rq-api.herokuapp.com/users', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
